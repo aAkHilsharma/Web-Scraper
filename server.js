@@ -11,14 +11,17 @@ app.use("/api/auth", require("./routes/auth"));
 app.use("/api/scrape", require("./routes/scrape"));
 
 //for deployment
+const rootPath = path.resolve(__dirname);
+const clientBuildPath = path.join(rootPath, "server", "client", "build");
+
 const path = require("path");
 __dirname = path.resolve();
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "client", "build")));
+  app.use(express.static(path.join(clientBuildPath)));
 
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+    res.sendFile(path.join(clientBuildPath, "index.html"));
   });
 }
 
